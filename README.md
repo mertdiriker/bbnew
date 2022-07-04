@@ -7,3 +7,6 @@ I use Laravel Framework,PHP,Javascript,HTML,CSS,MYSQL for this development.
 You can review anything you like.
 
 Thanks for reading my code :)
+
+                                                                        Mert Diriker
+                                                                        Software Engineer
