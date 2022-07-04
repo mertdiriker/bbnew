@@ -183,6 +183,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               3mimport
               </p>
             </a>
+          </li>
+              <li class="nav-item">
+            <a href="" class="nav-link {{ (request()->is('user/3mimport*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Writed By Mert Diriker
+              </p>
+            </a>
           </li> 
         </ul>
       </nav>
