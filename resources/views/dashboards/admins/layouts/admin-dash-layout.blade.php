@@ -134,6 +134,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.sendmail')}}" class="nav-link {{ (request()->is('admin/sendmail*')) ? 'active' : '' }}">
+              <i class="nav-icon fas fa-cog"></i>
+              <p>
+               Send Mail
+              </p>
+            </a>
+          </li>
          
         </ul>
 
@@ -309,7 +318,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script>
   function onScanSuccess(decodedText, decodedResult) {
   // handle the scanned code as you like, for example:
-  console.log(`Code matched = ${decodedText}`, decodedResult);
+ 
+  alert(decodedText);
 }
 
 function onScanFailure(error) {

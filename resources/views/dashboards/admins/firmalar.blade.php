@@ -16,6 +16,8 @@
                     <th>Firma Kodu</th>
                     <th>Firma Vno</th>
                     <th>Firma Adresi</th>
+                    <th>Firma Yetkili</th>
+                    <th>Firma İletisim</th>
                     <th>Firma Tedarikçi</th>
                     <th>Firma Müşteri</th>
                     <th>Firma Aktif</th>
@@ -28,6 +30,8 @@
                   <td>{{ $firm->firma_Kod }}</td>
                   <td>{{ $firm->firma_Vno }}</td>
                   <td>{{ $firm->firma_Adres }}</td>
+                  <td>{{ $firm->firma_yetkiliad }}</td>
+                  <td>{{ $firm->firma_iletisim }}</td>
                   <td>{{ $firm->firma_Tedarik }}</td>
                   <td>{{ $firm->firma_Musteri }}</td>
                   <td>{{ $firm->firma_Aktif }}</td>
@@ -40,6 +44,8 @@
                     <th>Firma Kodu</th>
                     <th>Firma Vno</th>
                     <th>Firma Adresi</th>
+                    <th>Firma Yetkili</th>
+                    <th>Firma İletisim</th>
                     <th>Firma Tedarikçi</th>
                     <th>Firma Müşteri</th>
                     <th>Firma Aktif</th>

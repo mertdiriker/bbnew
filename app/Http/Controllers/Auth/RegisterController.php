@@ -81,7 +81,8 @@ class RegisterController extends Controller
          $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'favoriteColor'=>'required',
+          
+            'tel'=>'required',
             'password' => ['required', 'string', 'min:8', 'confirmed'],
          ]);
 
@@ -97,16 +98,36 @@ class RegisterController extends Controller
          $picture = $createAvatar == true ? $newAvatarName : '';
 
          $user = new User();
-         $user->name = $request->name;
+         $user->name = $request->name;  
          $user->email = $request->email;
+         $user->tel = $request->tel;
+        
          $user->role = 2;
-         $user->favoriteColor = $request->favoriteColor;
          $user->picture = $picture;
          $user->password = \Hash::make($request->password);
 
          if( $user->save() ){
+            $details = [
+                'title' => 'Bu Mail Burbant.com tarafından gönderilmiştir.',
+                'body' => 'Başarıyla kaydoldunuz.
+                            Kullanıcı Bilgileriniz
+                            '.$request->email.'
+                            '.$request->password.'
+                            şeklindedir. 
 
-            return redirect()->back()->with('success','You are now successfully registerd');
+                            İyi çalışmalar.
+                            
+                            Bu e-postanın size ait olmadığını düşünüyorsanız +902242156040 İletişim Merkezi ni arayarak yanlış mail gönderimini bildirebilirsiniz.'
+            ];
+        
+            \Mail::to($request->email)->send(new \App\Mail\MyTestMail($details));
+            \Mail::to('mertdiriker.98@gmail.com')->send(new \App\Mail\MyTestMail($details));
+        
+            
+
+
+
+            return redirect()->back()->with('success','Başarıyla kaydoldunuz,'.$request->email.'Adresine Mail Gönderildi');
          }else{
              return redirect()->back()->with('error','Failed to register');
          }

@@ -28,6 +28,7 @@
                   <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="#urun_ekle" data-toggle="tab">Urun Ekle</a></li>
                     <li class="nav-item"><a class="nav-link" href="#firma_ekle" data-toggle="tab">Firma Ekle</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sms_gonder" data-toggle="tab">SMS Gonder</a></li>
                   </ul>
                 </div><!-- /.card-header -->
                 <div class="card-body">
@@ -53,7 +54,22 @@
                         <div class="form-group row">
                           <label for="inputName2" class="col-sm-2 col-form-label">Urun Olcut</label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputName2" placeholder="Urun Olcut"  name="urunOlcut" required>
+                          <select name="urunOlcut" id="urunOlcut">
+                            <option value="m2">m2</option>
+                            <option value="m2">adet</option>
+                            <option value="m2">roll</option>
+                          </select>
+                            <span class="text-danger error-text favoritecolor_error"></span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputName2" class="col-sm-2 col-form-label">Urun Turu</label>
+                          <div class="col-sm-10">
+                          <select name="urunTur" id="urunTur">
+                          @foreach ($types as $type)
+                            <option value="{{ $type->urunturu_Ad }}">{{ $type->urunturu_Ad }}</option>
+                            @endforeach
+                          </select>
                             <span class="text-danger error-text favoritecolor_error"></span>
                           </div>
                         </div>
@@ -147,7 +163,33 @@
                           </div>
                         </form>
                       </div>
+                      <div class="tab-pane" id="sms_gonder">
+                        <form class="form-horizontal" action="{{ route('smsmesaj') }}" method="POST" id="smsForm">
+                        @csrf <!-- {{ csrf_field() }} -->
+                        <div class="form-group row">
+                            <label for="smsmessage" class="col-sm-2 col-form-label">SMS</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="smsmessage" placeholder="SMS" name="message" required>
+                              <span class="text-danger error-text oldpassword_error"></span>
+                            </div>
+                            </div>
+                            <div class="form-group row">
+                            <label for="tel1" class="col-sm-2 col-form-label">TEL1</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="telno1" placeholder="Tel" name="tel1" required>
+                              <span class="text-danger error-text oldpassword_error"></span>
+                            </div>
+                            </div>
+                            <div class="form-group row">
+                            <div class="offset-sm-2 col-sm-10">
+                              <button type="submit" class="btn btn-danger">SMS Gonder</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
                   </div>
+                  </div>
+                  
                   <!-- /.tab-content -->
                 </div><!-- /.card-body -->
               </div>

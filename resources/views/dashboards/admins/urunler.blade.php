@@ -13,6 +13,7 @@
                   <thead>
                   <tr>
                     <th>QR</th>
+                    <th>Akıllı Kod</th>
                     <th>Urun Adı</th>
                     <th>Urun Kodu</th>
                     <th>Urun Ölçütü</th>
@@ -25,9 +26,11 @@
                   </thead>
                   <tbody>
                   @foreach ($products as $product)
+                  <input type="hidden" value="{{ $qr=utf8_encode ( $product->urun_Kod  )}}">
                   <tr>
-                    <td><img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::size(100)->format('png')->merge(public_path('bb.png'),.5, true)->generate('$product->urun_ID') ) }}">
+                    <td><img src="data:image/png;base64,{{ base64_encode(SimpleSoftwareIO\QrCode\Facades\QrCode::size(100)->format('png')->merge(public_path('bb.png'),.3, true)->generate( $qr )) }}">
 </td>
+                  <td>{{ $product->urun_Akillikod }}</td>
                   <td>{{ $product->urun_Ad }}</td>
                   <td>{{ $product->urun_Kod }}</td>
                   <td>{{ $product->urun_Olcut }}</td>

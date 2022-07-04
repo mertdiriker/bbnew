@@ -13,7 +13,16 @@ use App\Models\Product;
 
 class AdminController extends Controller
 {
+    function sendmail(){
+        $details = [
+            'title' => 'Bu Mail Burbant.com tarafından gönderilmiştir.',
+            'body' => 'Bu bir test mailidir.'
+        ];
     
+        \Mail::to('mertdiriker.98@gmail.com')->send(new \App\Mail\MyTestMail($details));
+    
+        dd("Email gönderildi!");
+    }
     function import() 
     {
         Excel::import(new ProductImport,request()->file('file'));
@@ -39,7 +48,8 @@ class AdminController extends Controller
            return view('dashboards.admins.settings');
        }
        function ekle(){
-        return view('dashboards.admins.ekle');
+        $producttypes = DB::select('select * from urunturleri');
+        return view('dashboards.admins.ekle',['types'=>$producttypes]);
         }
         function urunler(){
         $products = DB::select('select * from urun');
@@ -55,11 +65,12 @@ class AdminController extends Controller
             
             $product_name = $request->input('urunAd');
             $product_code = $request->input('urunKod');
-            $product_type = $request->input('urunOlcut');
+            $product_sizetype = $request->input('urunOlcut');
+            $product_type = $request->input('urunTur');
             $product_buy = $request->input('urunAlis');
             $product_sell = $request->input('urunSatis');
             $product_active = $request->input('urunAktif');
-            $data=array('urun_Ad'=>$product_name,"urun_Kod"=>$product_code,"urun_Olcut"=>$product_type,"urun_Alis"=>$product_buy,"urun_Satis"=>$product_sell,"urun_Aktif"=>$product_active);
+            $data=array('urun_Ad'=>$product_name,"urun_Kod"=>$product_code,"urun_Olcut"=>$product_sizetype,"urun_Tur"=>$product_type,"urun_Alis"=>$product_buy,"urun_Satis"=>$product_sell,"urun_Aktif"=>$product_active);
             $check = DB::table('urun')->insert($data);
             if($check){
                 return back()->with('success','Urun başarıyla eklendi!');
@@ -69,6 +80,47 @@ class AdminController extends Controller
                 return back()->with('error','Urun eklenemedi!');
             }
             
+    }
+    function smsgonder(Request $request)
+    {
+                            header('Content-Type: text/html; charset=utf-8');
+                    $postUrl='http://panel.vatansms.com/panel/smsgonder1Npost.php';
+                    $MUSTERİNO='29984'; //5 haneli müşteri numarası
+                    $KULLANICIADI='05339640512';
+                    $SIFRE='Bur9640512';
+                    $ORGINATOR="BUR-BANT";
+
+                    $TUR='Normal';  // Normal yada Turkce
+                    $ZAMAN='2014-04-07 10:00:00';
+
+                    $mesaj1=$request->input('message');
+                    $numara1=$request->input('tel1');
+                 
+
+                    $xmlString='data=<sms>
+                    <kno>'. $MUSTERİNO .'</kno>
+                    <kulad>'. $KULLANICIADI .'</kulad>
+                    <sifre>'.$SIFRE .'</sifre>
+                    <gonderen>'.  $ORGINATOR .'</gonderen>
+                    <mesaj>'. $mesaj1 .'</mesaj>
+                    <numaralar>'. $numara1.'</numaralar>
+                    <tur>'. $TUR .'</tur>
+                    </sms>';
+
+                    // Xml içinde aşağıdaki alanlarıda gönderebilirsiniz.
+                    //<zaman>'. $ZAMAN.'</zaman> İleri tarih için kullanabilirsiniz
+
+                    $Veriler =  $xmlString;
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $postUrl);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $Veriler);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+                    $response = curl_exec($ch);
+                    curl_close($ch);
+                    echo $response;
     }
     function addRecipe(Request $request)
     {
@@ -133,14 +185,14 @@ function showRecipe(Request $request)
             return back()->with('error','Firma eklenemedi!');
         }
 }
-    
+
 
        function updateInfo(Request $request){
            
                $validator = \Validator::make($request->all(),[
                    'name'=>'required',
                    'email'=> 'required|email|unique:users,email,'.Auth::user()->id,
-                   'favoritecolor'=>'required',
+                   
                ]);
 
                if(!$validator->passes()){
@@ -149,7 +201,7 @@ function showRecipe(Request $request)
                     $query = User::find(Auth::user()->id)->update([
                          'name'=>$request->name,
                          'email'=>$request->email,
-                         'favoriteColor'=>$request->favoritecolor,
+                       
                     ]);
 
                     if(!$query){
@@ -164,6 +216,9 @@ function showRecipe(Request $request)
        function updatePicture(Request $request){
            $path = 'users/images/';
            $file = $request->file('admin_image');
+           $image = getimagesize($file);
+            $width = $image[0];
+             $height = $image[1];
            $new_name = 'UIMG_'.date('Ymd').uniqid().'.jpg';
 
            //Upload new image
@@ -187,7 +242,7 @@ function showRecipe(Request $request)
                if( !$upload ){
                    return response()->json(['status'=>0,'msg'=>'Something went wrong, updating picture in db failed.']);
                }else{
-                   return response()->json(['status'=>1,'msg'=>'Your profile picture has been updated successfully']);
+                   return response()->json(['status'=>1,'msg'=>'Your profile picture has been updated successfully'.'Genislik : '.$width.'Yukseklik : '.$height]);
                }
            }
        }

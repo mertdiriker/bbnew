@@ -12,6 +12,6 @@ class Recipe extends Model
 
     protected $table = "recete";
 
-    protected $fillable = ['recete_Urun1ID','recete_Urun2ID','recete_Oran','recete_Oranfire','recete_Silindi','recete_Silen','recete_Silinditarih'];
+    protected $fillable = ['recete_Urun1ID','recete_Urun2ID','recete_Oran','recete_Oranfire','recete_Silindi','recete_Silen','recete_Silinditarih','recete_makine','recete_process'];
 
 }

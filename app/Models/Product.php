@@ -12,6 +12,6 @@ class Product extends Model
 
     protected $table = "urun";
 
-    protected $fillable = ['urun_Ad','urun_Kod','urun_Olcut','urun_Fiyat','urun_Kur','urun_Alis','urun_Satis','urun_Aktif'];
+    protected $fillable = ['urun_Ad','urun_Kod','urun_Olcut','urun_Fiyat','urun_Kur','urun_Alis','urun_Satis','urun_Aktif','urun_Turu'];
 
 }
